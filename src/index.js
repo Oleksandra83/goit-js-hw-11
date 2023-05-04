@@ -8,8 +8,7 @@ import { createMarkup } from "./js/createMarkup";
 const searchForm = document.querySelector('#search-form');
 const gallery = document.querySelector('.gallery');
 const modalLightbox = new SimpleLightbox('.gallery a');
-const btnLoadMore = document.querySelector('.btn-load-more')
-const guard = document.querySelector('.guard');
+const loadMore = document.querySelector('.load-more');
 let query = '';
 let page = 1;
 
@@ -29,7 +28,7 @@ async function onSearchFormSubmit() {
 		const response = await getPhotos(query, page);
 		addPhotos(response);
 		if (page !== totalPages) {
-			observer.observe(guard);
+			observer.observe(loadMore);
 		}
 	} catch (error) {
 		console.error(error);
@@ -91,7 +90,7 @@ function onloadMorePhotos(entries, observer) {
 			addGalleryPage();
 
 			if (page === totalPages) {
-				observer.unobserve(guard);
+				observer.unobserve(loadMore);
 			}
 		}
 	});

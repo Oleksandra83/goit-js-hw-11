@@ -2,7 +2,7 @@ import SimpleLightbox from "simplelightbox";
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import Notiflix from "notiflix";
 import { getPhotos, totalPages } from "./js/PixabayAPI";
-import { scroll } from "./js/scroll";
+// import { scroll } from "./js/scroll";
 import { createMarkup } from "./js/createMarkup";
 
 const searchForm = document.querySelector('#search-form');
@@ -20,7 +20,7 @@ const options = {
 
 const observer = new IntersectionObserver(onloadMorePhotos, options);
 
-searchForm.addEventListener('change', onInput);
+// searchForm.addEventListener('change', onInput);
 searchForm.addEventListener('submit', onSubmit);
 
 async function onSearchFormSubmit() {
@@ -51,22 +51,22 @@ async function addGalleryPage() {
 	}
 }
 
-function onInput(evt) {
-	query = evt.target.value.trim();
-	return query;
-}
+// function onInput(evt) {
+// 	query = evt.target.value.trim();
+// 	return query;
+// }
 
 function onSubmit(evt) {
 	evt.preventDefault();
 	page = 1;
 	gallery.innerHTML = '';
-
-	if (!evt.target.elements.searchQuery.value) {
+	query = evt.target.elements.searchQuery.value.trim();
+	if (!query) {
 		Notiflix.Notify.failure('Please, enter a search query');
-	} else {
+		return;
+	}
 		onSearchFormSubmit();
 	}
-}
 
 function addPhotos(response) {
 	const photos = response.data.hits;
@@ -74,6 +74,7 @@ function addPhotos(response) {
 	if (!photos.length) {
 		gallery.innerHTML = '';
 		Notiflix.Notify.failure('Sorry, there are no photos matching your search query. Please try again');
+		observer.unobserve(loadMore);
 	} else {
 		createMarkup(photos);
 		Notiflix.Notify.success(`Hooray! We found ${response.data.totalHits} photos`);

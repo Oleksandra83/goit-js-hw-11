@@ -2,7 +2,6 @@ import SimpleLightbox from "simplelightbox";
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import Notiflix from "notiflix";
 import { getPhotos, totalPages } from "./js/PixabayAPI";
-// import { scroll } from "./js/scroll";
 import { createMarkup } from "./js/createMarkup";
 
 const searchForm = document.querySelector('#search-form');
@@ -20,7 +19,6 @@ const options = {
 
 const observer = new IntersectionObserver(onloadMorePhotos, options);
 
-// searchForm.addEventListener('change', onInput);
 searchForm.addEventListener('submit', onSubmit);
 
 async function onSearchFormSubmit() {
@@ -51,11 +49,6 @@ async function addGalleryPage() {
 	}
 }
 
-// function onInput(evt) {
-// 	query = evt.target.value.trim();
-// 	return query;
-// }
-
 function onSubmit(evt) {
 	evt.preventDefault();
 	page = 1;
@@ -65,6 +58,7 @@ function onSubmit(evt) {
 		Notiflix.Notify.failure('Please, enter a search query');
 		return;
 	}
+		observer.unobserve(loadMore);
 		onSearchFormSubmit();
 	}
 
